@@ -73,4 +73,9 @@
 	<string name="event_expired">This event has already ended</string>
 	<string name="log_in_to_activate">Please log in again to activate your account.</string>
 	<string name="ok">OK</string>
+    <string name="create_room">Start a room</string>
+    <string name="topic_name">Add a topic</string>
+    <string name="room_open_mode">Open</string>
+	<string name="room_social_mode">Social</string>
+	<string name="room_private_mode">Private</string>
 </resources>
