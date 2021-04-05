@@ -216,7 +216,7 @@ public class HomeFragment extends BaseRecyclerFragment<Channel>{
 
 		public ChannelViewHolder(){
 			super(getActivity(), R.layout.channel_row);
-			topic=findViewById(R.id.topic_input);
+			topic=findViewById(R.id.topic);
 			speakers=findViewById(R.id.speakers);
 			numSpeakers=findViewById(R.id.num_speakers);
 			numMembers=findViewById(R.id.num_members);
