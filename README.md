@@ -2,7 +2,8 @@ Unofficial Clubhouse app for Android. Inspired by [this](https://github.com/styp
 
 Not to be taken seriously.
 
-THIS IS AN UPDATED VERSION OF CLUBHOUSE WITH NEWELY ADDED FEATURES 
+THIS IS AN UPDATED VERSION OF CLUBHOUSE WITH NEWLY ADDED FEATURES
+(IN THIS VARIANT YOU CAN NOW CREATE AND START YOUR OWN ROOMS!)
 
 This app is NOT available in Google Play. The only right place to download it is here in the releases section.
 
@@ -20,6 +21,7 @@ NEW FEATURES :
 - Disable raise hand button if raise hand is not enabled 
 - Alert user if hand is raised or unraised 
 - Link Instagram
+- Create and start an open, private or social room
 
 **Any issues about audio quality will be closed immediately, so please don't bother posting those.**
 
