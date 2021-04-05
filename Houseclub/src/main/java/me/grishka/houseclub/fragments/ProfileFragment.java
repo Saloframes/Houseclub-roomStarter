@@ -10,8 +10,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,6 +33,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.rilixtech.widget.countrycodepicker.CountryCodePicker;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -38,6 +42,9 @@ import java.text.DateFormat;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
+import io.michaelrocks.libphonenumber.android.NumberParseException;
+import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
+import io.michaelrocks.libphonenumber.android.Phonenumber;
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
@@ -72,9 +79,11 @@ public class ProfileFragment extends LoaderFragment{
 			invites , mutuals , followed_by , user_clubs , member_of_text;
 	private ImageView photo, inviterPhoto , pic1 , pic2 , pic3 ;
 	private Button followBtn, inviteButton;
-	private EditText invitePhoneNum;
+	private EditText invitePhoneInput, inviteName;
 	private View socialButtons, inviteLayout;
 	private WebView webView;
+	private CountryCodePicker countryCodePicker;
+	private PhoneNumberUtil phoneNumberUtil;
 
 	private boolean self , isImageFitToScreen;
 
@@ -118,7 +127,9 @@ public class ProfileFragment extends LoaderFragment{
 		user_clubs = v.findViewById(R.id.user_clubs);
 		member_of_text = v.findViewById(R.id.member_of_text);
 		followed_by = v.findViewById(R.id.followed_by);
-		invitePhoneNum = v.findViewById(R.id.invite_phone_num);
+		invitePhoneInput = v.findViewById(R.id.invite_phone_input);
+		inviteName = v.findViewById(R.id.invite_name);
+		countryCodePicker=v.findViewById(R.id.invite_country_code_picker);
 
 		followBtn.setOnClickListener(this::onFollowClick);
 		instagram.setOnClickListener(this::onInstagramClick);
@@ -139,6 +150,30 @@ public class ProfileFragment extends LoaderFragment{
 		webView.setVisibility(View.GONE);
 		webView.getSettings().setJavaScriptEnabled(true);
 		webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+
+		phoneNumberUtil=PhoneNumberUtil.createInstance(getActivity());
+		countryCodePicker.registerPhoneNumberTextView(invitePhoneInput);
+		invitePhoneInput.addTextChangedListener(new TextWatcher(){
+			@Override
+			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2){
+
+			}
+
+			@Override
+			public void onTextChanged(CharSequence charSequence, int i, int i1, int i2){
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable editable){
+				try{
+					Phonenumber.PhoneNumber number=phoneNumberUtil.parse(invitePhoneInput.getText().toString(), countryCodePicker.getSelectedCountryNameCode());
+					String country=phoneNumberUtil.getRegionCodeForNumber(number);
+					if(country!=null)
+						countryCodePicker.setCountryForNameCode(country);
+				}catch(NumberParseException igonre){}
+			}
+		});
 
 		return v;
 	}
@@ -575,8 +610,15 @@ public class ProfileFragment extends LoaderFragment{
 	}
 
 	private void onInviteClick(View v) {
-		final String numberToInvite = invitePhoneNum.getText().toString();
-		new InviteToApp("", numberToInvite, "")
+		final String numberToInvite = countryCodePicker.getNumber();
+		final String nameToInvite = inviteName.getText().toString();
+		final String messageInvite = getString(R.string.invite_message, nameToInvite, numberToInvite);
+
+		if(numberToInvite == null || numberToInvite.equals("")) {
+			Toast.makeText(getContext(), "Insert a number!", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		new InviteToApp(nameToInvite, numberToInvite, messageInvite)
 				.wrapProgress(getContext())
 				.setCallback(new Callback<BaseResponse>() {
 					@Override

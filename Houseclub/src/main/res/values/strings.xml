@@ -46,7 +46,7 @@
 		<item quantity="other">You have %d invites</item>
 	</plurals>
 	<string name="invite_button_label">Invite</string>
-	<string name="invite_phone_hint">Enter phone number</string>
+	<string name="invite_phone_hint">Phone number to invite</string>
 	<string name="follows_you">Follows you</string>
 	<string name="follow">Follow</string>
 	<string name="following">Following</string>
@@ -78,4 +78,6 @@
     <string name="room_open_mode">Open</string>
 	<string name="room_social_mode">Social</string>
 	<string name="room_private_mode">Private</string>
+    <string name="invite_name">User name to invite</string>
+	<string name="invite_message">Hey %s - I have an invite to Clubhouse and want you to join. 🙂 I added you using %s, so make sure to use that number when you register. Here is the link! https://join.club/app</string>
 </resources>
