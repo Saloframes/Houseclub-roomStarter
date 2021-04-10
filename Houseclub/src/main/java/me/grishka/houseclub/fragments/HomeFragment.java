@@ -239,6 +239,7 @@ public class HomeFragment extends BaseRecyclerFragment<Channel>{
 
 			imgLoader.bindViewHolder(adapter, this, getAdapterPosition());
 
+			club.setVisibility(View.GONE);
 			if(item.club_name != null) {
 				club.setText(item.club_name);
 				club.setVisibility(View.VISIBLE);
