@@ -65,6 +65,7 @@ public class Channel implements Parcelable{
 	public int channelId;
 	public String channel;
 	public String topic;
+	public String club_name;
 	public boolean isPrivate;
 	public boolean isSocialMode;
 	public String url;
@@ -92,6 +93,7 @@ public class Channel implements Parcelable{
 		dest.writeInt(this.channelId);
 		dest.writeString(this.channel);
 		dest.writeString(this.topic);
+		dest.writeString(this.club_name);
 		dest.writeByte(this.isPrivate ? (byte) 1 : (byte) 0);
 		dest.writeByte(this.isSocialMode ? (byte) 1 : (byte) 0);
 		dest.writeString(this.url);
@@ -113,6 +115,7 @@ public class Channel implements Parcelable{
 		this.channelId=source.readInt();
 		this.channel=source.readString();
 		this.topic=source.readString();
+		this.club_name=source.readString();
 		this.isPrivate=source.readByte()!=0;
 		this.isSocialMode=source.readByte()!=0;
 		this.url=source.readString();
@@ -137,6 +140,7 @@ public class Channel implements Parcelable{
 		this.channelId=in.readInt();
 		this.channel=in.readString();
 		this.topic=in.readString();
+		this.club_name=in.readString();
 		this.isPrivate=in.readByte()!=0;
 		this.isSocialMode=in.readByte()!=0;
 		this.url=in.readString();

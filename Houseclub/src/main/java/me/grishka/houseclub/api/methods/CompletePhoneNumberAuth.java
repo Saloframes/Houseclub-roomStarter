@@ -14,8 +14,9 @@ public class CompletePhoneNumberAuth extends ClubhouseAPIRequest<CompletePhoneNu
 
 	public static class Response{
 		public String authToken, accessToken, refreshToken;
-		public boolean isWaitlisted;
+		public boolean isWaitlisted, is_verified;
 		public User userProfile;
+		public Integer number_of_attempts_remaining;
 	}
 
 	private static class Body{

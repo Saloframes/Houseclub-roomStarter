@@ -65,6 +65,7 @@ public class LoginFragment extends BaseToolbarFragment{
 		countryCodePicker.registerPhoneNumberTextView(phoneInput);
 		nextBtn.setOnClickListener(this::onNextClick);
 		resendBtn.setOnClickListener(this::onResendClick);
+		phoneInput.setOnFocusChangeListener(this::onPhoneInputFocus);
 		phoneInput.addTextChangedListener(new TextWatcher(){
 			@Override
 			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2){
@@ -101,6 +102,12 @@ public class LoginFragment extends BaseToolbarFragment{
 					.setCallback(new SimpleCallback<CompletePhoneNumberAuth.Response>(this){
 						@Override
 						public void onSuccess(CompletePhoneNumberAuth.Response result){
+							if(!result.is_verified) {
+								codeInput.setText("");
+								Toast.makeText(LoginFragment.this.getContext(), "Wrong code. Number of attempts remaining: "+result.number_of_attempts_remaining, Toast.LENGTH_SHORT).show();
+								return;
+							}
+
 							ClubhouseSession.userToken=result.authToken;
 							ClubhouseSession.userID=result.userProfile.userId+"";
 							ClubhouseSession.isWaitlisted=result.isWaitlisted;
@@ -118,13 +125,18 @@ public class LoginFragment extends BaseToolbarFragment{
 		}else{
 			new StartPhoneNumberAuth(getCleanPhoneNumber())
 					.wrapProgress(getActivity())
-					.setCallback(new SimpleCallback<BaseResponse>(this){
+					.setCallback(new SimpleCallback<StartPhoneNumberAuth.Response>(this){
 						@Override
-						public void onSuccess(BaseResponse result){
+						public void onSuccess(StartPhoneNumberAuth.Response result){
+							if(result.is_blocked) {
+								Toast.makeText(LoginFragment.this.getContext(), "Number blocked", Toast.LENGTH_SHORT).show();
+								return;
+							}
 							sentCode=true;
-							phoneInput.setEnabled(false);
 							countryCodePicker.setClickable(false);
+							phoneInput.clearFocus();
 							codeInput.setVisibility(View.VISIBLE);
+							codeInput.requestFocus();
 							resendCodeLayout.setVisibility(View.VISIBLE);
 						}
 
@@ -141,5 +153,14 @@ public class LoginFragment extends BaseToolbarFragment{
 		new ResendPhoneNumberAuth(getCleanPhoneNumber())
 				.wrapProgress(getActivity())
 				.exec();
+	}
+
+	private void onPhoneInputFocus(View v, boolean hasFocus){
+		if(hasFocus && sentCode){
+			sentCode=false;
+			countryCodePicker.setClickable(true);
+			codeInput.setVisibility(View.INVISIBLE);
+			resendCodeLayout.setVisibility(View.INVISIBLE);
+		}
 	}
 }

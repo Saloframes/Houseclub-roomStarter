@@ -44,11 +44,11 @@
 
 			<Button
 				android:id="@+id/invite_to_room"
+				style="@style/Widget.Button.Grey"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:minWidth="0dp"
-				style="@style/Widget.Button.Grey"
-				android:text="+"/>
+				android:drawableEnd="@drawable/ic_baseline_add_24"
+				android:minWidth="0dp" />
 
 			<Button
 				android:id="@+id/raise"

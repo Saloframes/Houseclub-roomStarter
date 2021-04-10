@@ -8,12 +8,26 @@
 	android:foreground="?android:selectableItemBackground">
 
 	<TextView
+		android:id="@+id/club"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="5dp"
+		android:drawableLeft="@drawable/ic_baseline_home_24"
+		android:drawablePadding="5dp"
+		android:fontFamily="sans-serif-medium"
+		android:padding="@dimen/fastscroll_margin"
+		android:textSize="12dp"
+		android:visibility="gone"
+		tools:text="Club" />
+
+	<TextView
 		android:id="@+id/topic"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_below="@id/club"
 		android:layout_marginBottom="16dp"
 		android:fontFamily="sans-serif-medium"
-		tools:text="Channel topic"/>
+		tools:text="Channel topic" />
 
 	<me.grishka.houseclub.views.SquircleImageView
 		android:id="@+id/pic1"

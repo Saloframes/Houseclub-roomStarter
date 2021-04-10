@@ -210,13 +210,14 @@ public class HomeFragment extends BaseRecyclerFragment<Channel>{
 
 	private class ChannelViewHolder extends BindableViewHolder<Channel> implements View.OnClickListener, ImageLoaderViewHolder{
 
-		private TextView topic, speakers, numMembers, numSpeakers;
+		private TextView topic, club, speakers, numMembers, numSpeakers;
 		private ImageView pic1, pic2;
 		private Drawable placeholder=new ColorDrawable(getResources().getColor(R.color.grey));
 
 		public ChannelViewHolder(){
 			super(getActivity(), R.layout.channel_row);
 			topic=findViewById(R.id.topic);
+			club=findViewById(R.id.club);
 			speakers=findViewById(R.id.speakers);
 			numSpeakers=findViewById(R.id.num_speakers);
 			numMembers=findViewById(R.id.num_members);
@@ -237,6 +238,11 @@ public class HomeFragment extends BaseRecyclerFragment<Channel>{
 			speakers.setText(item.users.stream().map(user->user.isSpeaker ? (user.name+" 💬") : user.name).collect(Collectors.joining("\n")) );
 
 			imgLoader.bindViewHolder(adapter, this, getAdapterPosition());
+
+			if(item.club_name != null) {
+				club.setText(item.club_name);
+				club.setVisibility(View.VISIBLE);
+			}
 		}
 
 		@Override

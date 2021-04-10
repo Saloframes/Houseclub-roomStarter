@@ -85,6 +85,8 @@ public class ClubhouseAPIController{
 			try{
 				if(req.canceled)
 					return;
+				if(DEBUG)
+					Log.i(TAG, "Starting request: "+req.getClass());
 				Uri.Builder uri=API_URL.buildUpon().appendPath(req.path);
 				if(req.queryParams!=null){
 					for(Map.Entry<String, String> e:req.queryParams.entrySet()){

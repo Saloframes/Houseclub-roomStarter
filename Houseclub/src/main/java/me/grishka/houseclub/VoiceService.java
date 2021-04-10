@@ -127,7 +127,8 @@ public class VoiceService extends Service{
 			Notification.Builder n=new Notification.Builder(this)
 					.setSmallIcon(R.drawable.ic_phone_in_talk)
 					.setContentTitle(getString(R.string.ongoing_call))
-					.setContentText(intent.getStringExtra("topic"))
+					/*.setContentText(intent.getStringExtra("topic"))*/
+					.setContentText(channel.topic)
 					.setContentIntent(PendingIntent.getActivity(this, 1, new Intent(this, MainActivity.class).putExtra("openCurrentChannel", true), PendingIntent.FLAG_UPDATE_CURRENT))
 					.addAction(leaveRoomAction);
 			if(Build.VERSION.SDK_INT>=26){
@@ -145,6 +146,7 @@ public class VoiceService extends Service{
 	}
 
 	private void doJoinChannel(){
+		engine.setAudioProfile(Constants.AUDIO_PROFILE_DEFAULT, Constants.AUDIO_SCENARIO_CHATROOM_ENTERTAINMENT);
 		engine.setChannelProfile(isSelfSpeaker ? Constants.CHANNEL_PROFILE_COMMUNICATION : Constants.CHANNEL_PROFILE_LIVE_BROADCASTING);
 		engine.joinChannel(channel.token, channel.channel, "", Integer.parseInt(ClubhouseSession.userID));
 		uiHandler.postDelayed(pinger, 30000);
