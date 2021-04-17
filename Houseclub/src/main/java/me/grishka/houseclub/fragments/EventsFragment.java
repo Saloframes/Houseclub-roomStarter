@@ -1,32 +1,26 @@
 package me.grishka.houseclub.fragments;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Outline;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.stream.Collectors;
 
 import me.grishka.appkit.api.Callback;
@@ -37,13 +31,9 @@ import me.grishka.appkit.imageloader.ImageLoaderRecyclerAdapter;
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.V;
-import me.grishka.houseclub.MainActivity;
 import me.grishka.houseclub.R;
-import me.grishka.houseclub.VoiceService;
 import me.grishka.houseclub.api.methods.GetChannel;
-import me.grishka.houseclub.api.methods.GetEvent;
 import me.grishka.houseclub.api.methods.GetEvents;
-import me.grishka.houseclub.api.methods.JoinChannel;
 import me.grishka.houseclub.api.model.Channel;
 import me.grishka.houseclub.api.model.Event;
 
@@ -178,7 +168,7 @@ public class EventsFragment extends BaseRecyclerFragment<Event>{
 		public EventViewHolder() {
 			super(getActivity(), R.layout.event_row);
 			start_at=findViewById(R.id.event_start_time);
-			topic=findViewById(R.id.topic);
+			topic=findViewById(R.id.ich_topic);
 			description=findViewById(R.id.description);
 			hosts=findViewById(R.id.hosts);
 			pic1=findViewById(R.id.pic1);

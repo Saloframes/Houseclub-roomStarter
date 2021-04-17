@@ -5,15 +5,19 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Outline;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.se.omapi.Session;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,11 +53,19 @@ public class InChannelFragment extends BaseRecyclerFragment<ChannelUser> impleme
 
 	private MergeRecyclerAdapter adapter;
 	private UserListAdapter speakersAdapter, followedAdapter, othersAdapter;
-	private ImageButton muteBtn;
-	private Button raiseBtn , invite_to_room;
+	private ImageButton muteBtn, raiseBtn;
+	private Button invite_to_room;
+	private TextView ich_topic, ich_club;
 	private Channel channel;
 	private ArrayList<ChannelUser> speakers=new ArrayList<>(), followedBySpeakers=new ArrayList<>(), otherUsers=new ArrayList<>();
-	private ArrayList<Integer> mutedUsers=new ArrayList<>(), speakingUsers=new ArrayList<>();
+	private ArrayList<Integer> mutedUsers=new ArrayList<>(), speakingUsers=new ArrayList<>(), newUsers=new ArrayList<>();
+	private ViewOutlineProvider roundedCornersOutline=new ViewOutlineProvider(){
+		@Override
+		public void getOutline(View view, Outline outline){
+			float cornerRadius = TypedValue.applyDimension( TypedValue.COMPLEX_UNIT_DIP, 32f, getResources().getDisplayMetrics());
+			outline.setRoundRect(0, 0, view.getWidth(), (int)(view.getHeight() + cornerRadius), cornerRadius);
+		}
+	};
 
 	public InChannelFragment(){
 		super(10);
@@ -68,6 +80,7 @@ public class InChannelFragment extends BaseRecyclerFragment<ChannelUser> impleme
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
+		setTitle("All rooms");
 		view.findViewById(R.id.leave).setOnClickListener(this::onLeaveClick);
 
         invite_to_room=view.findViewById(R.id.invite_to_room);
@@ -94,6 +107,9 @@ public class InChannelFragment extends BaseRecyclerFragment<ChannelUser> impleme
 		list.setLayoutManager(lm);
 		list.setPadding(0, V.dp(16), 0, V.dp(16));
 		list.setClipToPadding(false);
+
+		contentWrap.setOutlineProvider(roundedCornersOutline);
+		contentWrap.setClipToOutline(true);
 
 		VoiceService.addListener(this);
 		getToolbar().setElevation(0);
@@ -139,10 +155,18 @@ public class InChannelFragment extends BaseRecyclerFragment<ChannelUser> impleme
 		return view;
 	}
 
+	private View makeChannelHeader(){
+		LinearLayout view = (LinearLayout) View.inflate(getActivity(), R.layout.channel_header, null);
+		ich_club = view.findViewById(R.id.ich_club);
+		ich_topic = view.findViewById(R.id.ich_topic);
+		return view;
+	}
+
 	@Override
 	protected RecyclerView.Adapter getAdapter(){
 		if(adapter==null){
 			adapter=new MergeRecyclerAdapter();
+			adapter.addAdapter(new SingleViewRecyclerAdapter(makeChannelHeader()));
 			adapter.addAdapter(speakersAdapter=new UserListAdapter(speakers, View.generateViewId()));
 			adapter.addAdapter(new SingleViewRecyclerAdapter(makeSectionHeader(R.string.followed_by_speakers)));
 			adapter.addAdapter(followedAdapter=new UserListAdapter(followedBySpeakers, View.generateViewId()));
@@ -153,16 +177,18 @@ public class InChannelFragment extends BaseRecyclerFragment<ChannelUser> impleme
 	}
 
 	private void onLeaveClick(View v){
-		VoiceService.getInstance().leaveChannel();
-		Nav.finish(this);
+		VoiceService.getInstance().leaveCurrentChannel();
+		//Nav.finish(this);
 	}
 
 	private void onRaiseClick(View v) {
 		VoiceService svc = VoiceService.getInstance();
 		if(svc.isHandRaised()){
+			raiseBtn.setImageResource(R.drawable.ic_clubhouse_unraised_hand);
 			Toast.makeText(getActivity(), "Hand UnRaised", Toast.LENGTH_SHORT).show();
 			svc.unraiseHand();
 		}else{
+			raiseBtn.setImageResource(R.drawable.ic_clubhouse_raised_hand);
 			Toast.makeText(getActivity(), "Hand Raised", Toast.LENGTH_SHORT).show();
 			svc.raiseHand();
 		}
@@ -185,7 +211,7 @@ public class InChannelFragment extends BaseRecyclerFragment<ChannelUser> impleme
 
 	@Override
 	public void onUserMuteChanged(int id, boolean muted){
-		int i=0;
+		int i=1;
 		if(muted){
 			if(!mutedUsers.contains(id))
 				mutedUsers.add(id);
@@ -279,13 +305,26 @@ public class InChannelFragment extends BaseRecyclerFragment<ChannelUser> impleme
 	@Override
 	public void onChannelUpdated(Channel channel){
 		this.channel=channel;
-		setTitle(channel.topic);
+		//setTitle(channel.topic);
+		ich_topic.setVisibility(View.GONE);
+		if(channel.topic != null) {
+			ich_topic.setText(channel.topic);
+			ich_topic.setVisibility(View.VISIBLE);
+		}
+
+		ich_club.setVisibility(View.GONE);
+		if(channel.club_name != null) {
+			ich_club.setText(channel.club_name);
+			ich_club.setVisibility(View.VISIBLE);
+		}
 		speakers.clear();
 		followedBySpeakers.clear();
 		otherUsers.clear();
 		for(ChannelUser user:channel.users){
 			if(user.isMuted && !mutedUsers.contains(user.userId))
 				mutedUsers.add(user.userId);
+			if(user.isNew && !newUsers.contains(user.userId))
+				newUsers.add(user.userId);
 			if(user.isSpeaker)
 				speakers.add(user);
 			else if(user.isFollowedBySpeaker)
@@ -309,7 +348,7 @@ public class InChannelFragment extends BaseRecyclerFragment<ChannelUser> impleme
 		speakingUsers.clear();
 		speakingUsers.addAll(ids);
 
-		int i=0;
+		int i=1;
 		for(ChannelUser user:speakers){
 			RecyclerView.ViewHolder h=list.findViewHolderForAdapterPosition(i);
 			if(h instanceof UserViewHolder){
@@ -369,7 +408,7 @@ public class InChannelFragment extends BaseRecyclerFragment<ChannelUser> impleme
 	private class UserViewHolder extends BindableViewHolder<ChannelUser> implements ImageLoaderViewHolder, UsableRecyclerView.Clickable{
 
 		private ImageView photo, muted;
-		private TextView name;
+		private TextView name, newUser;
 		private View speakerBorder;
 		private Drawable placeholder=new ColorDrawable(getResources().getColor(R.color.grey));
 
@@ -379,11 +418,13 @@ public class InChannelFragment extends BaseRecyclerFragment<ChannelUser> impleme
 			photo=findViewById(R.id.photo);
 			name=findViewById(R.id.name);
 			muted=findViewById(R.id.muted);
+			newUser=findViewById(R.id.newUser);
 			speakerBorder=findViewById(R.id.speaker_border);
 
 			ViewGroup.LayoutParams lp=photo.getLayoutParams();
 			lp.width=lp.height=V.dp(large ? 72 : 48);
 			muted.setVisibility(View.INVISIBLE);
+			newUser.setVisibility(View.INVISIBLE);
 			if(!large)
 				speakerBorder.setVisibility(View.GONE);
 			else
@@ -397,6 +438,7 @@ public class InChannelFragment extends BaseRecyclerFragment<ChannelUser> impleme
 			else
 				name.setText(item.firstName);
 			muted.setVisibility(mutedUsers.contains(item.userId) ? View.VISIBLE : View.INVISIBLE);
+			newUser.setVisibility(newUsers.contains(item.userId) ? View.VISIBLE : View.INVISIBLE);
 			speakerBorder.setAlpha(speakingUsers.contains(item.userId) ? 1 : 0);
 
 			if(item.photoUrl==null)

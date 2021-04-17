@@ -345,6 +345,8 @@ public class VoiceService extends Service{
 		listeners.remove(l);
 	}
 
+	public void refreshListeners() { listeners.forEach(l -> l.onChannelUpdated(channel)); }
+
 	public boolean isSelfSpeaker(){
 		return isSelfSpeaker;
 	}
@@ -417,12 +419,12 @@ public class VoiceService extends Service{
 	}
 
 	public interface ChannelEventListener{
-		void onUserMuteChanged(int id, boolean muted);
-		void onUserJoined(ChannelUser user);
-		void onUserLeft(int id);
-		void onCanSpeak(String inviterName, int inviterID);
+		default void onUserMuteChanged(int id, boolean muted) {};
+		default void onUserJoined(ChannelUser user) {};
+		default void onUserLeft(int id) {};
+		default void onCanSpeak(String inviterName, int inviterID) {};
 		void onChannelUpdated(Channel channel);
-		void onSpeakingUsersChanged(List<Integer> ids);
+		default void onSpeakingUsersChanged(List<Integer> ids) {};
 		void onChannelEnded();
 	}
 

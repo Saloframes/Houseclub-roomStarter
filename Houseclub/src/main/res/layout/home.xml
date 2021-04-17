@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/refresh_layout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical">
+
+		<FrameLayout
+			android:id="@+id/content_wrap"
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1">
+
+			<me.grishka.appkit.views.UsableRecyclerView
+				android:id="@+id/list"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:fadingEdgeLength="56dp"
+				android:requiresFadingEdge="vertical" />
+
+			<include
+				android:id="@+id/empty"
+				layout="@layout/appkit_empty" />
+
+			<Button
+				android:id="@+id/create_room"
+				style="@style/Widget.Button.Green.Home"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="bottom|center"
+				android:drawableStart="@drawable/ic_baseline_add_white_24"
+				android:text="@string/create_room" />
+		</FrameLayout>
+
+		<LinearLayout
+			android:id="@+id/current_room"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom"
+			android:background="@drawable/in_channel_background"
+			android:foreground="?android:selectableItemBackground"
+			android:orientation="horizontal"
+			android:padding="8dp">
+
+			<RelativeLayout
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent">
+
+				<me.grishka.houseclub.views.SquircleImageView
+					android:id="@+id/ich_pic1"
+					android:layout_width="45dp"
+					android:layout_height="45dp"
+					android:translationZ="9999dp"
+					tools:src="#0f0" />
+
+				<me.grishka.houseclub.views.SquircleImageView
+					android:id="@+id/ich_pic2"
+					android:layout_width="45dp"
+					android:layout_height="45dp"
+					android:layout_alignStart="@id/ich_pic1"
+					android:layout_marginStart="35dp"
+					android:translationZ="9998dp"
+					tools:src="#00f" />
+
+				<me.grishka.houseclub.views.SquircleImageView
+					android:id="@+id/ich_pict"
+					android:layout_width="45dp"
+					android:layout_height="45dp"
+					android:layout_alignStart="@id/ich_pic2"
+					android:layout_marginStart="35dp"
+					android:translationZ="9996dp"
+					tools:src="#f00" />
+
+				<TextView
+					android:id="@+id/ich_all"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignLeft="@+id/ich_pict"
+					android:layout_alignTop="@+id/ich_pict"
+					android:layout_alignRight="@+id/ich_pict"
+					android:layout_alignBottom="@+id/ich_pict"
+					android:layout_marginStart="1dp"
+					android:layout_marginTop="1dp"
+					android:layout_marginEnd="1dp"
+					android:layout_marginBottom="1dp"
+					android:gravity="center"
+					android:textColor="#000000"
+					android:textSize="16sp"
+					android:translationZ="9997dp"
+					tools:text="+0" />
+			</RelativeLayout>
+
+			<View
+				android:layout_width="0dp"
+				android:layout_height="1dp"
+				android:layout_weight="1" />
+
+			<Button
+				android:id="@+id/leave"
+				style="@style/Widget.Button.Grey.InChannel"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:minWidth="45dp"
+				android:minHeight="45dp"
+				android:text="@string/leave_room_short" />
+
+			<Button
+				android:id="@+id/invite_to_room"
+				style="@style/Widget.Button.Grey.InChannel"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginEnd="5dp"
+				android:drawableEnd="@drawable/ic_baseline_add_24"
+				android:visibility="gone" />
+
+			<ImageButton
+				android:id="@+id/raise"
+				style="@style/Widget.Button.Grey.InChannel"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:src="@drawable/ic_clubhouse_unraised_hand"
+				android:visibility="gone" />
+
+			<ImageButton
+				android:id="@+id/mute"
+				style="@style/Widget.Button.Grey.InChannel"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:src="@drawable/ic_mic_off"
+				android:visibility="gone" />
+
+		</LinearLayout>
+	</LinearLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
