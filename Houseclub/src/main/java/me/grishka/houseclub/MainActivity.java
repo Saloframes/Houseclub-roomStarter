@@ -18,6 +18,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import me.grishka.appkit.FragmentStackActivity;
+import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.api.SimpleCallback;
@@ -119,6 +120,13 @@ public class MainActivity extends FragmentStackActivity{
 		}
 	}
 
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		if(VoiceService.getInstance() != null)
+			VoiceService.getInstance().refreshListeners();
+	}
+
 	private void joinChannelFromIntent(){
 		Uri data=getIntent().getData();
 		List<String> path=data.getPathSegments();
@@ -178,6 +186,10 @@ public class MainActivity extends FragmentStackActivity{
 	}
 
 	public void joinChannel(String chan){
+		joinChannel(chan, null);
+	}
+
+	public void joinChannel(String chan, Fragment fromFragment){
 		if(VoiceService.getInstance()!=null){
 			Channel current=VoiceService.getInstance().getChannel();
 			if(current.channel.equals(chan)){
@@ -204,6 +216,8 @@ public class MainActivity extends FragmentStackActivity{
 							else
 								startService(intent);
 
+							if(fromFragment != null)
+								Nav.finish(fromFragment);
 							Bundle extras=new Bundle();
 							extras.putBoolean("_can_go_back", true);
 							InChannelFragment fragment=new InChannelFragment();

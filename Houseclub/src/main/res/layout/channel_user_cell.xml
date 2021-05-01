@@ -37,6 +37,21 @@
 		android:src="@drawable/ic_mic_off"/>
 
 	<TextView
+		android:id="@+id/newUser"
+		android:layout_width="32dp"
+		android:layout_height="32dp"
+		android:layout_alignLeft="@id/photo"
+		android:layout_alignBottom="@id/photo"
+		android:layout_marginLeft="-8dp"
+		android:layout_marginBottom="-8dp"
+		android:background="@drawable/white_circle"
+		android:elevation="1dp"
+		android:gravity="center"
+		android:scaleType="center"
+		android:text="@string/party_popper"
+		android:textAlignment="gravity" />
+
+	<TextView
 		android:id="@+id/name"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"

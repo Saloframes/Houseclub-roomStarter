@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/channel_header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:divider="@drawable/ic_divider_empty_5"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:showDividers="middle|end">
+
+    <TextView
+        android:id="@+id/ich_club"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:drawableEnd="@drawable/ic_baseline_home_24"
+        android:drawablePadding="5dp"
+        android:fontFamily="sans-serif-medium"
+        android:padding="@dimen/fastscroll_margin"
+        android:textSize="12dp"
+        tools:text="Club" />
+
+    <TextView
+        android:id="@+id/ich_topic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:fontFamily="sans-serif-medium"
+        tools:text="Channel topic" />
+</LinearLayout>

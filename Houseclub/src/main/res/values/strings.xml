@@ -18,6 +18,7 @@
 
 	<string name="ongoing_call">Ongoing call</string>
 	<string name="leave_room">✌️ Leave quietly</string>
+	<string name="leave_room_short">✌️</string>
 	<string name="join_this_room">Join this room?</string>
 	<string name="join">Join</string>
 	<string name="cancel">Cancel</string>
@@ -80,4 +81,5 @@
 	<string name="room_private_mode">Private</string>
     <string name="invite_name">User name to invite</string>
 	<string name="invite_message">Hey %s - I have an invite to Clubhouse and want you to join. 🙂 I added you using %s, so make sure to use that number when you register. Here is the link! https://join.club/app</string>
+    <string name="party_popper">🎉</string>
 </resources>

@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.houseclub.MainActivity;
@@ -49,6 +50,10 @@ public class CreateChannelFragment extends BaseToolbarFragment {
 		return v;
 	}
 
+	public CreateChannelFragment get() {
+		return this;
+	}
+
 	private void onCreateRoomClick(View v) {
 		final String topic = topicName.getText().toString();
 		final Boolean is_social_mode = socialMode.isChecked();
@@ -63,7 +68,7 @@ public class CreateChannelFragment extends BaseToolbarFragment {
 						Toast.makeText(getContext(),
 								"Channel with topic: ("+result.topic+") created",
 								Toast.LENGTH_SHORT).show();
-						((MainActivity)getActivity()).joinChannel(result.channel);
+						((MainActivity)getActivity()).joinChannel(result.channel, get());
 					}
 
 					@Override

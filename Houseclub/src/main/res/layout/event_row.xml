@@ -18,7 +18,7 @@
 		tools:text="Monday 10:00 AM"/>
 
 	<TextView
-		android:id="@+id/topic"
+		android:id="@+id/ich_topic"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="20dp"
@@ -30,7 +30,7 @@
 		android:id="@+id/pic1"
 		android:layout_width="40dp"
 		android:layout_height="40dp"
-		android:layout_below="@id/topic"
+		android:layout_below="@id/ich_topic"
 		tools:src="#0f0"/>
 
 	<me.grishka.houseclub.views.SquircleImageView
@@ -39,7 +39,7 @@
 		android:layout_height="40dp"
 		android:layout_alignLeft="@id/pic1"
 		android:layout_marginLeft="45dp"
-		android:layout_below="@id/topic"
+		android:layout_below="@id/ich_topic"
 		tools:src="#00f"/>
 
 
@@ -49,7 +49,7 @@
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/pic2"
 		android:layout_marginLeft="16dp"
-		android:layout_below="@id/topic"
+		android:layout_below="@id/ich_topic"
 		tools:text="Host list"/>
 
 
